@@ -57,7 +57,7 @@ def profilo_PL():
     try:
         A = big_list[0]
         B = big_list[1]
-        profilo_PL =  float(B) - float(A)
+        profilo_PL =  float(B) + float(A)
         profilo_PL_2 = round(profilo_PL,2)
         big_list.append(profilo_PL_2)
         total_profit_R = profilo_PL_2/total_Cash
