@@ -29,7 +29,7 @@ def get_index_PL():
         driver = webdriver.Chrome()
         url = 'https://finance.sina.com.cn/futures/quotes/CHA50CFD.shtml'
         # driver = webdriver.PhantomJS(service_args=SERVICE_ARGS)
-        driver.set_window_size(380, 1200)  # 设置窗口大小
+        driver.set_window_size(38, 12)  # 设置窗口大小
         driver.get(url)
         # time.sleep(1)
         html = driver.page_source
@@ -98,7 +98,11 @@ def insertDB(content):
 # #
 # 尝试数据源不一定稳定，勉强可以用下
 if __name__ == '__main__':
+    i = 0  
     while True:
+        
+        i += 1
+        print(i)
         big_list = []
         get_index_PL()
         get_stocks_PL()
@@ -108,6 +112,7 @@ if __name__ == '__main__':
         content.append(l_tuple)
         insertDB(content)
         time.sleep(6)
+
 
 
 
