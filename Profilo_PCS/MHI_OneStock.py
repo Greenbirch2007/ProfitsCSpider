@@ -7,14 +7,17 @@ import re
 import pymysql
 import requests
 from lxml import etree
+import time
+import datetime
+#  2018.11.18  中国燃气-恒生指数
 
 total_Cash = 100000
 index_Cash = 0.3*total_Cash
 stock_Cash = 0.6*total_Cash
 # FX_price = 6.95  都按照日元测算
-index_Future_N = (index_Cash)/20222 #向下取整  选择mini日经225
-index_cost = 27200
-stock_cost = 10.021
+index_Future_N = (index_Cash)/20222 #向下取整 
+index_cost = 26183
+stock_cost = 25.4
 
 def get_index_PL():
     response = requests.get('https://www.laohu8.com/hq/s/HSI?f=baidu&utm_source=baidu&utm_medium=aladingpc')
@@ -27,9 +30,9 @@ def get_index_PL():
     big_list.append(str(indexF_PL_2))
 
 
-# 00177宁沪告诉
+# 00384 中国燃气 25.4
 def get_stocks_PL():
-    response = requests.get('https://www.laohu8.com/hq/s/00177')
+    response = requests.get('https://www.laohu8.com/hq/s/00384')
     html = response.text
     selector = etree.HTML(html)
     price = selector.xpath('//*[@id="root"]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div/strong/text()')
@@ -83,6 +86,8 @@ if __name__ == '__main__':
         content = []
         content.append(l_tuple)
         insertDB(content)
+        time.sleep(10)
+        print(datetime.datetime.now())
 
 #  指数期货盈亏， 个股盈亏，总盈亏， 总收益率   这个四个部分进行设计
 

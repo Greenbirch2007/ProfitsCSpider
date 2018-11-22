@@ -16,25 +16,33 @@ index_Cash = 0.3*total_Cash
 stock_Cash = 0.6*total_Cash
 FX_price = 6.95
 index_Future_N = (index_Cash/FX_price)/1000 #向下取整
-index_cost = 11300
-stock_cost = 2.56
+index_cost = 11375
+stock_cost = 2.50
+
+# 2018.11.22 远兴能源——————a50指数模型测试
+
+
 
 def get_index_PL():
-    driver = webdriver.Chrome()
-    url = 'https://finance.sina.com.cn/futures/quotes/CHA50CFD.shtml'
-    # driver = webdriver.PhantomJS(service_args=SERVICE_ARGS)
-    driver.set_window_size(380, 1200)  # 设置窗口大小
-    driver.get(url)
-    # time.sleep(1)
-    html = driver.page_source
-    # print(html)  #正则还是有问题，选择了一个动态变动的颜色标记是不好的 最近浏览不是每次都有的！所以用数字的颜色取判断吧
-    patt = re.compile('<th>最新价:' + '.*?</th><td class=".*?">(.*?)</td>', re.S)
-    items = re.findall(patt, html)
-    items_int = int(items[0][:-3])
-    indexF_PL = (index_cost-items_int)*FX_price
-    indexF_PL_2 = round(indexF_PL,2)
-    big_list.append(str(indexF_PL_2))
-    driver.quit()
+    try :
+
+        driver = webdriver.Chrome()
+        url = 'https://finance.sina.com.cn/futures/quotes/CHA50CFD.shtml'
+        # driver = webdriver.PhantomJS(service_args=SERVICE_ARGS)
+        driver.set_window_size(380, 1200)  # 设置窗口大小
+        driver.get(url)
+        # time.sleep(1)
+        html = driver.page_source
+        # print(html)  #正则还是有问题，选择了一个动态变动的颜色标记是不好的 最近浏览不是每次都有的！所以用数字的颜色取判断吧
+        patt = re.compile('<th>最新价:' + '.*?</th><td class=".*?">(.*?)</td>', re.S)
+        items = re.findall(patt, html)
+        items_int = int(items[0][:-3])
+        indexF_PL = (index_cost-items_int)*FX_price
+        indexF_PL_2 = round(indexF_PL,2)
+        big_list.append(str(indexF_PL_2))
+        driver.quit()
+    except ValueError as e:
+        pass
 
 
 
@@ -99,8 +107,9 @@ if __name__ == '__main__':
         content = []
         content.append(l_tuple)
         insertDB(content)
+        time.sleep(6)
 
-#  指数期货盈亏， 个股盈亏，总盈亏， 总收益率   这个四个部分进行设计
+
 
 
 
@@ -112,3 +121,5 @@ if __name__ == '__main__':
 # profilo_PL varchar(10),
 # profilo_PL_R varchar(10)
 # ) engine=InnoDB  charset=utf8;
+
+# drop table A50_OneStock_PL;

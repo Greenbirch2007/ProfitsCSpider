@@ -7,14 +7,16 @@ import re
 import pymysql
 import requests
 from lxml import etree
-
+import time
+import datetime
+# 2018.11.18 大日本住友製薬(株)【4506 -——————日经225指数
 total_Cash = 1000000
 index_Cash = 0.3*total_Cash
 stock_Cash = 0.6*total_Cash
 # FX_price = 6.95  都按照日元测算
 index_Future_N = (index_Cash)/85576 #向下取整  选择mini日经225
-index_cost = 22700.00
-stock_cost = 3131
+index_cost = 21680.00
+stock_cost = 2938
 
 def get_index_PL():
     response = requests.get('https://stocks.finance.yahoo.co.jp/stocks/detail/?code=998407.O')
@@ -28,9 +30,9 @@ def get_index_PL():
     big_list.append(str(indexF_PL_2))
 
 
-# 5706
+# 大日本住友製薬(株)【4506】
 def get_stocks_PL():
-    url = 'https://stocks.finance.yahoo.co.jp/stocks/detail/?code=5706'
+    url = 'https://stocks.finance.yahoo.co.jp/stocks/detail/?code=4506'
     headers = {'Useragent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; GTB7.0'}
     response = requests.get(url, headers=headers)
     content = response.text
@@ -88,6 +90,8 @@ if __name__ == '__main__':
         content = []
         content.append(l_tuple)
         insertDB(content)
+        time.sleep(10)
+        print(datetime.datetime.now())
 
 #  指数期货盈亏， 个股盈亏，总盈亏， 总收益率   这个四个部分进行设计
 
